@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Cam</title>
+<style>
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:#0b0f14;color:#f3f4f6;display:flex;justify-content:center;}
+  .wrap{width:100%;max-width:420px;padding:32px 16px;display:flex;flex-direction:column;gap:14px;}
+  h1{font-size:22px;margin:0 0 8px;}
+  button{font:inherit;font-size:18px;font-weight:600;border:none;border-radius:14px;padding:18px;width:100%;cursor:pointer;}
+  .go{background:#22c55e;color:#07120a;}
+  .stop{background:transparent;color:#f87171;border:1.5px solid #f87171;font-size:16px;}
+  #status{min-height:20px;text-align:center;color:#9aa4b2;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Home Cam</h1>
+  <button class="go" id="start">Start &amp; join call</button>
+  <button class="stop" id="stop">Turn laptop camera off</button>
+  <div id="status"></div>
+</div>
+<script>
+  // Secrets live only in the link's #part (after the #), never in this file.
+  // Link format: https://YOURNAME.github.io/home-cam/#TOPIC/ROOM
+  var parts = location.hash.slice(1).split("/");
+  var TOPIC = parts[0], ROOM = parts[1];
+  var statusEl = document.getElementById("status");
+  var MEET = "https://meet.ffmuc.net/" + ROOM +
+    "#config.prejoinConfig.enabled=false&config.startWithAudioMuted=false&config.startWithVideoMuted=false";
+
+  if (!TOPIC || !ROOM) statusEl.textContent = "This link is missing its secret part after the #.";
+
+  function send(cmd){ return fetch("https://ntfy.sh/" + TOPIC, {method:"POST", body:cmd}); }
+
+  document.getElementById("start").onclick = function(){
+    statusEl.textContent = "Turning the laptop camera on…";
+    send("start").then(function(){
+      statusEl.textContent = "Joining…";
+      setTimeout(function(){ location.href = MEET; }, 2500);
+    }).catch(function(){ statusEl.textContent = "Couldn't send the command. Check your phone's internet."; });
+  };
+  document.getElementById("stop").onclick = function(){
+    send("stop").then(function(){ statusEl.textContent = "Laptop camera off."; })
+      .catch(function(){ statusEl.textContent = "Couldn't send the command."; });
+  };
+</script>
+</body>
+</html>
