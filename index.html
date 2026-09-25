@@ -11,7 +11,9 @@
   h1{font-size:22px;margin:0 0 8px;}
   button{font:inherit;font-size:18px;font-weight:600;border:none;border-radius:14px;padding:18px;width:100%;cursor:pointer;}
   .go{background:#22c55e;color:#07120a;}
-  .stop{background:transparent;color:#f87171;border:1.5px solid #f87171;font-size:16px;}
+  .note{color:#9aa4b2;font-size:14px;line-height:1.5;margin:0;}
+  .stop{background:none;border:none;padding:4px;width:auto;align-self:center;
+        color:#9aa4b2;font-size:13px;font-weight:400;text-decoration:underline;}
   #status{min-height:20px;text-align:center;color:#9aa4b2;font-size:14px;}
 </style>
 </head>
@@ -19,8 +21,9 @@
 <div class="wrap">
   <h1>Home Cam</h1>
   <button class="go" id="start">Start &amp; join call</button>
-  <button class="stop" id="stop">Turn laptop camera off</button>
   <div id="status"></div>
+  <p class="note">Hang up on your phone and the laptop ends the call and turns its camera off.</p>
+  <button class="stop" id="stop">Laptop still on? Turn it off</button>
 </div>
 <script>
   // Secrets live only in the link's #part (after the #), never in this file.
